@@ -42,7 +42,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   const canSend = value.trim().length > 0 && !disabled;
 
   return (
-    <div className="sticky bottom-0 bg-white border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] px-4 py-3 rounded-t-xl">
+    <div className="sticky bottom-0 bg-white border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] px-4 py-3 pb-16 md:pb-3 rounded-t-xl">
       <div className="flex items-end gap-3 max-w-3xl mx-auto">
         <textarea
           ref={textareaRef}

@@ -207,7 +207,7 @@ export function RolePlayChat({ persona, onEnd, onCoachNote }: RolePlayChatProps)
       </div>
 
       {/* Suggested prompts / completion */}
-      <div className="px-4 py-3 border-t border-slate-200 bg-white">
+      <div className="px-4 py-3 pb-16 md:pb-3 border-t border-slate-200 bg-white">
         <div className="max-w-3xl mx-auto">
           {sessionComplete ? (
             <div className="text-center">

@@ -149,7 +149,7 @@ export function WellBeingChat({ initialMood, onCrisisTriggered }: WellBeingChatP
   const canSend = inputValue.trim().length > 0 && !isStreaming && !isTyping;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] bg-gradient-to-b from-accent-50/30 to-white rounded-2xl overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-8rem)] pb-16 md:pb-0 bg-gradient-to-b from-accent-50/30 to-white rounded-2xl overflow-hidden">
       {/* Privacy Badge */}
       <div className="flex items-center justify-center gap-2 py-2.5 bg-accent-50 border-b border-accent-100 text-accent-700 text-xs font-medium">
         <Lock className="w-3.5 h-3.5" />
@@ -227,7 +227,7 @@ export function WellBeingChat({ initialMood, onCrisisTriggered }: WellBeingChatP
       </div>
 
       {/* Chat Input */}
-      <div className="sticky bottom-0 bg-white border-t border-accent-100 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] px-4 py-3 rounded-t-xl">
+      <div className="sticky bottom-0 bg-white border-t border-accent-100 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] px-4 py-3 pb-16 md:pb-3 rounded-t-xl">
         <div className="flex items-end gap-3 max-w-3xl mx-auto">
           <textarea
             ref={textareaRef}

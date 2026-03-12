@@ -74,7 +74,7 @@ export function HeroSection() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-            className="flex-1 lg:max-w-[45%] w-full"
+            className="flex-1 lg:max-w-[45%] w-full hidden sm:block"
           >
             <div className="rounded-2xl border border-slate-200 shadow-2xl shadow-primary-900/5 bg-white overflow-hidden">
               {/* Window top bar */}
