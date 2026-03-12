@@ -31,6 +31,7 @@
   --animate-slide-up: slideUp 0.5s ease-out;
   --animate-slide-in-right: slideInRight 0.3s ease-out;
   --animate-shimmer: shimmer 2s infinite;
+  --animate-slide-in-left: slideInLeft 0.3s ease-out;
 }
 
 @keyframes fadeIn {
@@ -51,6 +52,11 @@
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@keyframes slideInLeft {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
 }
 
 html {
