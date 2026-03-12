@@ -1,0 +1,149 @@
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Download, ArrowLeft, Pencil, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui";
+import type { CaseStep } from "@/data/case-mapping-data";
+
+interface CasePreviewProps {
+  formData: Record<string, unknown>;
+  steps: CaseStep[];
+  onEdit: (stepNumber: number) => void;
+  onDownload: () => void;
+}
+
+export function CasePreview({ formData, steps, onEdit, onDownload }: CasePreviewProps) {
+  const [showToast, setShowToast] = useState(false);
+
+  const handleDownload = () => {
+    onDownload();
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const renderFieldValue = (field: CaseStep["fields"][number]) => {
+    const value = formData[field.id];
+
+    if (!value || (Array.isArray(value) && value.length === 0) || value === "") {
+      return <p className="text-sm text-slate-400 italic">Not completed</p>;
+    }
+
+    if (field.type === "checkbox-group" && Array.isArray(value)) {
+      return (
+        <ul className="list-disc list-inside text-sm text-slate-700 space-y-1">
+          {(value as string[]).map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      );
+    }
+
+    return <p className="text-sm text-slate-700 whitespace-pre-wrap">{String(value)}</p>;
+  };
+
+  const caseId = (formData.caseId as string) || "DV-2026-XXXX";
+
+  return (
+    <div>
+      {/* Actions bar */}
+      <div className="flex items-center justify-between mb-6">
+        <Button variant="secondary" onClick={() => onEdit(1)}>
+          <ArrowLeft className="w-4 h-4" />
+          Back to Editor
+        </Button>
+        <Button onClick={handleDownload}>
+          <Download className="w-4 h-4" />
+          Download PDF
+        </Button>
+      </div>
+
+      {/* Toast notification */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-6 right-6 z-50 bg-accent-600 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3"
+          >
+            <CheckCircle className="w-5 h-5" />
+            <span className="text-sm font-medium">
+              PDF export ready &mdash; Case_Map_{caseId}.pdf
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Document preview */}
+      <div className="bg-white max-w-3xl mx-auto shadow-xl rounded-2xl p-8 md:p-12">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold tracking-widest text-slate-800 uppercase">
+            Case Map Report
+          </h1>
+          <p className="text-sm text-slate-400 mt-1">SafetyNexus</p>
+          <div className="h-px bg-slate-200 mt-4" />
+        </div>
+
+        {/* Case meta */}
+        <div className="grid grid-cols-3 gap-4 mb-8 text-sm">
+          <div>
+            <span className="text-slate-400">Case ID</span>
+            <p className="font-medium text-slate-700">{caseId}</p>
+          </div>
+          <div>
+            <span className="text-slate-400">Date</span>
+            <p className="font-medium text-slate-700">
+              {(formData.date as string) || "Not set"}
+            </p>
+          </div>
+          <div>
+            <span className="text-slate-400">Worker</span>
+            <p className="font-medium text-slate-700">
+              {(formData.workerName as string) || "Not set"}
+            </p>
+          </div>
+        </div>
+
+        {/* Steps content */}
+        <div className="space-y-8">
+          {steps.map((step) => (
+            <section key={step.number}>
+              <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-4">
+                <h2 className="font-bold text-lg text-slate-800">
+                  {step.number}. {step.title}
+                </h2>
+                <button
+                  onClick={() => onEdit(step.number)}
+                  className="flex items-center gap-1 text-xs text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                >
+                  <Pencil className="w-3 h-3" />
+                  Edit
+                </button>
+              </div>
+
+              <div className="space-y-4 pl-2">
+                {step.fields.map((field) => (
+                  <div key={field.id}>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                      {field.label}
+                    </p>
+                    {renderFieldValue(field)}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 pt-6 border-t border-slate-200 text-center">
+          <p className="text-xs text-slate-400">
+            Generated by SafetyNexus &mdash; Safe &amp; Together Aligned
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
