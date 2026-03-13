@@ -8,6 +8,8 @@ import {
   Heart,
   BarChart3,
   Clock,
+  CheckCircle,
+  Circle,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -101,12 +103,16 @@ export default function DashboardPage() {
   const firstName = DEMO_USER.name.split(" ")[0];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="max-w-7xl mx-auto space-y-10">
       {/* Welcome Banner */}
       <AnimatedSection>
         <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-6 md:p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4" />
           <div className="absolute bottom-0 left-1/2 w-48 h-48 bg-white/5 rounded-full translate-y-1/2" />
+          <div className="absolute top-8 right-32 w-20 h-20 bg-white/[0.04] rounded-full" />
+          <div className="absolute bottom-4 left-20 w-14 h-14 bg-white/[0.06] rounded-full" />
+          <div className="absolute top-1/2 right-1/4 w-8 h-8 bg-white/[0.05] rounded-full" />
+          <div className="absolute top-3 left-1/3 w-10 h-10 bg-white/[0.03] rounded-full" />
           <div className="relative">
             <p className="text-primary-100 text-sm mb-1">{formatDate()}</p>
             <h1 className="text-2xl md:text-3xl font-bold mb-1">
@@ -119,6 +125,27 @@ export default function DashboardPage() {
               &ldquo;Every case is an opportunity to center the safety of
               children and the dignity of survivors.&rdquo;
             </p>
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* Getting Started */}
+      <AnimatedSection delay={0.05}>
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm px-6 py-4">
+          <h3 className="text-sm font-semibold text-slate-600 mb-3">Getting Started</h3>
+          <div className="flex items-center gap-6 md:gap-10">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <span className="text-sm text-slate-700 font-medium">First Session</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Circle className="w-5 h-5 text-slate-300" />
+              <span className="text-sm text-slate-400">Try Role-Play</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Circle className="w-5 h-5 text-slate-300" />
+              <span className="text-sm text-slate-400">Complete a Case Map</span>
+            </div>
           </div>
         </div>
       </AnimatedSection>
@@ -140,10 +167,11 @@ export default function DashboardPage() {
               <AnimatedSection key={mod.id} delay={0.15 + index * 0.05}>
                 <Link href={mod.href} className="block h-full">
                   <Card className="h-full flex flex-col">
-                    <div
-                      className={`w-11 h-11 ${colors.bg} rounded-xl flex items-center justify-center mb-4`}
-                    >
-                      <Icon className={`w-5 h-5 ${colors.text}`} />
+                    <div className="relative w-11 h-11 mb-4">
+                      <div className={`absolute inset-0 ${colors.bg} rounded-full opacity-40 scale-125`} />
+                      <div className={`relative w-11 h-11 ${colors.bg} rounded-xl flex items-center justify-center`}>
+                        <Icon className={`w-5 h-5 ${colors.text}`} />
+                      </div>
                     </div>
                     <h3 className="font-semibold text-slate-800 mb-1">
                       {mod.name}
@@ -170,11 +198,18 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl border border-slate-100 shadow-sm divide-y divide-slate-100">
           {recentSessions.map((session, index) => {
             const colors = colorMap[session.color] || colorMap.primary;
+            const borderLeftColor: Record<string, string> = {
+              primary: "border-l-blue-500",
+              violet: "border-l-purple-500",
+              amber: "border-l-amber-500",
+              teal: "border-l-teal-500",
+              blue: "border-l-blue-500",
+            };
 
             return (
               <div
                 key={index}
-                className="flex items-center gap-4 p-4 hover:bg-slate-50/50 transition-colors"
+                className={`flex items-center gap-4 p-4 hover:bg-slate-50 transition-colors cursor-pointer border-l-[3px] ${borderLeftColor[session.color] || "border-l-blue-500"}`}
               >
                 <div
                   className={`w-2.5 h-2.5 rounded-full shrink-0 ${colors.dot}`}

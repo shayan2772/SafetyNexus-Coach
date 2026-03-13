@@ -73,14 +73,38 @@ export function KPICard({
       className={`bg-white rounded-2xl shadow-sm border border-slate-100 p-6 border-l-4 ${colors.border}`}
     >
       <div className="flex items-center gap-3 mb-4">
-        <div className={`w-10 h-10 rounded-xl ${colors.iconBg} flex items-center justify-center`}>
+        <motion.div
+          initial={{ scale: 1 }}
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 2, delay: delay + 0.5, ease: "easeInOut" }}
+          className={`w-10 h-10 rounded-xl ${colors.iconBg} flex items-center justify-center`}
+        >
           <IconComponent className={`w-5 h-5 ${colors.iconText}`} />
-        </div>
+        </motion.div>
         <span className="text-sm text-slate-500 font-medium">{label}</span>
       </div>
 
-      <div className="text-3xl font-bold text-slate-900 mb-2">
+      <div className="text-3xl font-bold text-slate-900 mb-1">
         <CountUpNumber end={value} suffix={suffix} decimals={decimals} />
+      </div>
+
+      {/* Mini sparkline */}
+      <div className="mb-2">
+        <svg width="80" height="20" viewBox="0 0 80 20" className="text-slate-200">
+          <polyline
+            fill="none"
+            stroke={changeType === "up" ? "#22c55e" : "#ef4444"}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            points={
+              changeType === "up"
+                ? "0,16 12,14 24,15 36,11 48,9 60,7 72,4 80,2"
+                : "0,4 12,6 24,5 36,9 48,11 60,13 72,16 80,18"
+            }
+            opacity="0.7"
+          />
+        </svg>
       </div>
 
       <div className="flex items-center gap-1.5">

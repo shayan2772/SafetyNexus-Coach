@@ -6,6 +6,7 @@ import {
   ClipboardList,
   Heart,
   BarChart3,
+  ArrowRight,
 } from "lucide-react";
 import { Card, AnimatedSection } from "@/components/ui";
 import { MODULES } from "@/lib/constants";
@@ -34,6 +35,14 @@ const iconBgMap: Record<string, string> = {
   blue: "bg-blue-100 text-blue-600",
 };
 
+const hoverBgMap: Record<string, string> = {
+  primary: "hover:bg-primary-50/40",
+  violet: "hover:bg-violet-50/40",
+  amber: "hover:bg-amber-50/40",
+  teal: "hover:bg-accent-50/40",
+  blue: "hover:bg-blue-50/40",
+};
+
 export function FeaturesSection() {
   return (
     <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50/50">
@@ -52,11 +61,19 @@ export function FeaturesSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {MODULES.map((mod, i) => {
             const Icon = iconMap[mod.icon];
+            const isCoach = mod.id === "coach";
             return (
               <AnimatedSection key={mod.id} delay={i * 0.1}>
                 <Card
-                  className={`border-t-4 ${borderColorMap[mod.color]} transition-all duration-300 h-full`}
+                  className={`relative border-t-4 ${borderColorMap[mod.color]} ${hoverBgMap[mod.color]} transition-all duration-300 h-full group overflow-hidden`}
                 >
+                  {/* Most Popular badge for The Coach */}
+                  {isCoach && (
+                    <div className="absolute top-3 right-3 bg-primary-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+                      Most Popular
+                    </div>
+                  )}
+
                   <div
                     className={`w-12 h-12 rounded-xl ${iconBgMap[mod.color]} flex items-center justify-center mb-4`}
                   >
@@ -65,9 +82,15 @@ export function FeaturesSection() {
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">
                     {mod.name}
                   </h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">
+                  <p className="text-slate-500 text-sm leading-relaxed mb-4">
                     {mod.description}
                   </p>
+
+                  {/* Learn more arrow */}
+                  <div className="flex items-center gap-1 text-sm font-medium text-primary-600 opacity-0 translate-x-[-8px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    Learn more
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </Card>
               </AnimatedSection>
             );

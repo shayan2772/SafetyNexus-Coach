@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Button, Badge } from "@/components/ui";
+import { Button, Badge, CountUpNumber } from "@/components/ui";
 import { APP_DESCRIPTION } from "@/lib/constants";
 
 const chatMessages = [
@@ -24,14 +24,43 @@ const chatMessages = [
   },
 ];
 
+const stats = [
+  { value: 500, suffix: "+", label: "Caseworkers" },
+  { value: 15000, suffix: "+", label: "Sessions" },
+  { value: 3, suffix: "", label: "Countries" },
+];
+
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary-50/30 to-white" />
-      <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent-200/20 rounded-full blur-3xl" />
-      <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-primary-100/15 rounded-full blur-3xl" />
+
+      {/* Subtle grid pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 49px, #64748b 49px, #64748b 50px), repeating-linear-gradient(90deg, transparent, transparent 49px, #64748b 49px, #64748b 50px)",
+        }}
+      />
+
+      {/* Animated floating circles */}
+      <motion.div
+        className="absolute top-20 left-10 w-72 h-72 bg-primary-200/20 rounded-full blur-3xl"
+        animate={{ y: [0, -20, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-10 w-96 h-96 bg-accent-200/20 rounded-full blur-3xl"
+        animate={{ y: [0, 25, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-1/2 left-1/3 w-64 h-64 bg-primary-100/15 rounded-full blur-3xl"
+        animate={{ y: [0, -15, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 pt-28 w-full">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
@@ -46,9 +75,9 @@ export function HeroSection() {
               Built on the Safe &amp; Together Model
             </Badge>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-tight tracking-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-6" style={{ letterSpacing: "-0.02em", textShadow: "0 2px 10px rgba(15, 23, 42, 0.08)" }}>
               Empowering Caseworkers with{" "}
-              <span className="gradient-text">AI-Guided Practice Support</span>
+              <span className="gradient-text" style={{ textShadow: "none", filter: "drop-shadow(0 2px 8px rgba(59, 130, 246, 0.15))" }}>AI-Guided Practice Support</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
@@ -64,9 +93,31 @@ export function HeroSection() {
               </Link>
             </div>
 
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-400 mb-8">
               Trusted by organizations across Scotland, New Zealand &amp; Australia
             </p>
+
+            {/* Stats counters */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+              className="flex items-center justify-center lg:justify-start gap-0"
+            >
+              {stats.map((stat, i) => (
+                <div key={stat.label} className="flex items-center">
+                  <div className="text-center px-5">
+                    <div className="text-2xl sm:text-3xl font-bold text-slate-900">
+                      <CountUpNumber end={stat.value} suffix={stat.suffix} duration={2} />
+                    </div>
+                    <div className="text-xs sm:text-sm text-slate-400 mt-0.5">{stat.label}</div>
+                  </div>
+                  {i < stats.length - 1 && (
+                    <div className="w-px h-10 bg-slate-200" />
+                  )}
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
 
           {/* Right side — animated chat mockup */}

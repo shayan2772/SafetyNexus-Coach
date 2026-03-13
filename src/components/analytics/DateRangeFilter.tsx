@@ -5,6 +5,13 @@ import { Download, FileDown } from "lucide-react";
 import { Button } from "@/components/ui";
 import { DATE_RANGES } from "@/data/analytics-data";
 
+const RANGE_COUNTS: Record<string, number> = {
+  "Last 7 Days": 48,
+  "Last 30 Days": 187,
+  "Last 90 Days": 523,
+  "This Year": 1240,
+};
+
 interface DateRangeFilterProps {
   selected: string;
   onSelect: (range: string) => void;
@@ -22,11 +29,21 @@ export function DateRangeFilter({ selected, onSelect, onExport }: DateRangeFilte
             className={clsx(
               "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
               selected === range
-                ? "bg-primary-600 text-white shadow-sm"
+                ? "bg-primary-600 text-white shadow-md"
                 : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
             )}
           >
             {range}
+            {RANGE_COUNTS[range] && (
+              <span className={clsx(
+                "ml-1.5 text-xs rounded-full px-1.5 py-0.5",
+                selected === range
+                  ? "bg-white/20 text-white"
+                  : "bg-slate-100 text-slate-400"
+              )}>
+                {RANGE_COUNTS[range]}
+              </span>
+            )}
           </button>
         ))}
       </div>

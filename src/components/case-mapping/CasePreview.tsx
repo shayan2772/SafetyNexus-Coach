@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, ArrowLeft, Pencil, CheckCircle } from "lucide-react";
+import { Download, ArrowLeft, Pencil, CheckCircle, Shield } from "lucide-react";
 import { Button } from "@/components/ui";
 import type { CaseStep } from "@/data/case-mapping-data";
 
@@ -76,18 +76,28 @@ export function CasePreview({ formData, steps, onEdit, onDownload }: CasePreview
       </AnimatePresence>
 
       {/* Document preview */}
-      <div className="bg-white max-w-3xl mx-auto shadow-xl rounded-2xl p-8 md:p-12">
+      <div className="bg-white max-w-3xl mx-auto shadow-xl rounded-2xl p-8 md:p-12 relative overflow-hidden">
+        {/* DRAFT watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span className="text-[120px] font-extrabold text-slate-100 -rotate-45 tracking-[0.3em] uppercase opacity-40">
+            DRAFT
+          </span>
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold tracking-widest text-slate-800 uppercase">
-            Case Map Report
-          </h1>
+        <div className="relative text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Shield className="w-6 h-6 text-primary-600" />
+            <h1 className="text-2xl font-bold tracking-widest text-slate-800 uppercase">
+              Case Map Report
+            </h1>
+          </div>
           <p className="text-sm text-slate-400 mt-1">SafetyNexus</p>
           <div className="h-px bg-slate-200 mt-4" />
         </div>
 
         {/* Case meta */}
-        <div className="grid grid-cols-3 gap-4 mb-8 text-sm">
+        <div className="relative grid grid-cols-3 gap-4 mb-8 text-sm">
           <div>
             <span className="text-slate-400">Case ID</span>
             <p className="font-medium text-slate-700">{caseId}</p>
@@ -107,7 +117,7 @@ export function CasePreview({ formData, steps, onEdit, onDownload }: CasePreview
         </div>
 
         {/* Steps content */}
-        <div className="space-y-8">
+        <div className="relative space-y-8">
           {steps.map((step) => (
             <section key={step.number}>
               <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-4">

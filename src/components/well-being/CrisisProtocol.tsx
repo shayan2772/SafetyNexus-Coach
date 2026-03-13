@@ -51,7 +51,7 @@ function ResourceGroup({
   const config = CATEGORY_CONFIG[category];
 
   return (
-    <div className={clsx("rounded-xl border p-4 md:p-5 mb-4", config.bg, config.border)}>
+    <div className={clsx("rounded-xl border p-4 md:p-5 mb-6", config.bg, config.border)}>
       <div className="flex items-center gap-2 mb-3">
         {config.icon}
         <h3 className={clsx("font-bold text-sm uppercase tracking-wide", config.textColor)}>
@@ -74,7 +74,7 @@ function ResourceGroup({
               </span>
               <a
                 href={`tel:${resource.phone.replace(/\s/g, "")}`}
-                className="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200"
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
               >
                 <Phone className="w-3.5 h-3.5" />
                 Call Now
@@ -102,12 +102,19 @@ export function CrisisProtocol({ onSafe }: CrisisProtocolProps) {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="fixed inset-0 z-50 bg-white overflow-y-auto"
     >
-      {/* Top Bar */}
-      <div className="bg-red-500 text-white px-4 py-3">
+      {/* Top Bar with heartbeat animation */}
+      <div className="bg-red-500 text-white px-4 py-4">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
           <motion.div
-            animate={{ scale: [1, 1.15, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            animate={{
+              scale: [1, 1.25, 1, 1.2, 1],
+            }}
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              ease: "easeInOut",
+              repeatDelay: 0.3,
+            }}
           >
             <AlertTriangle className="w-6 h-6" />
           </motion.div>

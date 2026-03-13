@@ -23,7 +23,7 @@ export function StepForm({ step, formData, onChange }: StepFormProps) {
             value={(value as string) || ""}
             onChange={(e) => onChange(field.id, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full rounded-xl border border-slate-200 p-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+            className="w-full rounded-xl border border-slate-200 p-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-400 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)] transition-all duration-200"
           />
         );
 
@@ -34,7 +34,7 @@ export function StepForm({ step, formData, onChange }: StepFormProps) {
             value={(value as string) || ""}
             onChange={(e) => onChange(field.id, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full rounded-xl border border-slate-200 p-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all min-h-[120px] resize-y"
+            className="w-full rounded-xl border border-slate-200 p-3 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-400 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)] transition-all duration-200 min-h-[120px] resize-y"
           />
         );
 
@@ -125,11 +125,16 @@ export function StepForm({ step, formData, onChange }: StepFormProps) {
           <div key={field.id}>
             <label
               htmlFor={field.id}
-              className="block font-medium text-slate-700 mb-1.5"
+              className="block font-semibold text-slate-700 mb-1.5"
             >
               {field.label}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </label>
+            {field.type === "textarea" && (
+              <p className="text-xs text-slate-400 mb-2">
+                Provide as much detail as possible to support thorough case analysis.
+              </p>
+            )}
             {renderField(field)}
           </div>
         ))}

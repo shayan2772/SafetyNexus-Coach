@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, ArrowRight, Info } from "lucide-react";
+import { CheckCircle, ArrowRight, Info, Star, Sparkles, Target } from "lucide-react";
 import { clsx } from "clsx";
 import { Button, AnimatedSection } from "@/components/ui";
 import type { Persona } from "@/data/role-play-data";
@@ -39,8 +39,8 @@ function ScoreRing({ score }: { score: number }) {
   }, [score]);
 
   return (
-    <div className="relative w-32 h-32 mx-auto">
-      <svg className="w-32 h-32 -rotate-90" viewBox="0 0 120 120">
+    <div className="relative w-40 h-40 mx-auto">
+      <svg className="w-40 h-40 -rotate-90" viewBox="0 0 120 120">
         <circle
           cx="60"
           cy="60"
@@ -65,10 +65,10 @@ function ScoreRing({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className={clsx("text-3xl font-bold", color.split(" ")[0])}>
+        <span className={clsx("text-4xl font-bold", color.split(" ")[0])}>
           {animatedScore}
         </span>
-        <span className="text-xs text-slate-400">/ 100</span>
+        <span className="text-sm text-slate-400">/ 100</span>
       </div>
     </div>
   );
@@ -98,7 +98,36 @@ export function DebriefScreen({
         </div>
 
         {/* Score */}
-        <ScoreRing score={debrief.score} />
+        <div className="relative">
+          <ScoreRing score={debrief.score} />
+          {debrief.score >= 85 && (
+            <>
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0, y: 0 }}
+                  animate={{
+                    opacity: [0, 1, 0],
+                    scale: [0, 1, 0.5],
+                    y: [0, -40 - i * 10],
+                    x: [0, (i % 2 === 0 ? 1 : -1) * (15 + i * 8)],
+                  }}
+                  transition={{
+                    duration: 1.8,
+                    delay: 0.5 + i * 0.15,
+                    ease: "easeOut",
+                  }}
+                  className="absolute top-1/2 left-1/2"
+                >
+                  <Sparkles className={clsx(
+                    "w-4 h-4",
+                    i % 3 === 0 ? "text-amber-400" : i % 3 === 1 ? "text-green-400" : "text-primary-400"
+                  )} />
+                </motion.div>
+              ))}
+            </>
+          )}
+        </div>
         <p className="text-center text-sm text-slate-500 mt-3 mb-8">
           S&T Alignment Score
         </p>
@@ -106,7 +135,10 @@ export function DebriefScreen({
         {/* Strengths */}
         <AnimatedSection delay={0.1}>
           <div className="bg-green-50 rounded-xl p-5 mb-4">
-            <h3 className="font-semibold text-green-800 mb-3">Strengths</h3>
+            <h3 className="font-semibold text-green-800 mb-3 flex items-center gap-2">
+              <Star className="w-4 h-4" />
+              Strengths
+            </h3>
             <ul className="space-y-2">
               {debrief.strengths.map((s, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-green-700">
@@ -121,7 +153,8 @@ export function DebriefScreen({
         {/* Improvements */}
         <AnimatedSection delay={0.2}>
           <div className="bg-amber-50 rounded-xl p-5 mb-4">
-            <h3 className="font-semibold text-amber-800 mb-3">
+            <h3 className="font-semibold text-amber-800 mb-3 flex items-center gap-2">
+              <Target className="w-4 h-4" />
               Areas for Improvement
             </h3>
             <ul className="space-y-2">

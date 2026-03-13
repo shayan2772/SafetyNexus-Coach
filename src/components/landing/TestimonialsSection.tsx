@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, Quote } from "lucide-react";
+import { Star } from "lucide-react";
 import { Card, AnimatedSection } from "@/components/ui";
 
 const testimonials = [
@@ -10,6 +10,7 @@ const testimonials = [
     name: "Dr. Emma Richardson",
     role: "Program Director, Scottish DV Services",
     initials: "ER",
+    org: "Scottish DV Services",
   },
   {
     quote:
@@ -17,6 +18,7 @@ const testimonials = [
     name: "James Kowalski",
     role: "Senior Caseworker, NZ Family Services",
     initials: "JK",
+    org: "NZ Family Services",
   },
   {
     quote:
@@ -24,7 +26,14 @@ const testimonials = [
     name: "Aroha Williams",
     role: "Team Lead, Australian Child Protection",
     initials: "AW",
+    org: "Australian Child Protection",
   },
+];
+
+const elevationClasses = [
+  "shadow-sm",
+  "shadow-md -translate-y-1",
+  "shadow-sm",
 ];
 
 export function TestimonialsSection() {
@@ -48,16 +57,18 @@ export function TestimonialsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((t, i) => (
             <AnimatedSection key={t.name} delay={i * 0.15}>
-              <Card hover={false} className="h-full flex flex-col">
-                {/* Quote icon */}
-                <Quote className="w-8 h-8 text-primary-200 mb-4" />
+              <Card hover={false} className={`h-full flex flex-col ${elevationClasses[i]}`}>
+                {/* Large decorative quote mark */}
+                <div className="text-6xl leading-none text-primary-100 font-serif select-none -mb-2">
+                  &ldquo;
+                </div>
 
                 {/* Stars */}
                 <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, j) => (
                     <Star
                       key={j}
-                      className="w-4 h-4 fill-amber-400 text-amber-400"
+                      className="w-5 h-5 fill-amber-400 text-amber-400"
                     />
                   ))}
                 </div>
@@ -79,6 +90,13 @@ export function TestimonialsSection() {
                     </p>
                     <p className="text-xs text-slate-400">{t.role}</p>
                   </div>
+                </div>
+
+                {/* Organization badge */}
+                <div className="mt-4 pt-3 border-t border-slate-50">
+                  <span className="inline-block text-xs font-medium text-slate-400 bg-slate-50 px-3 py-1 rounded-full">
+                    {t.org}
+                  </span>
                 </div>
               </Card>
             </AnimatedSection>

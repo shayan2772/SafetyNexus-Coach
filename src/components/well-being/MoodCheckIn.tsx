@@ -34,18 +34,21 @@ export function MoodCheckIn({ onMoodSelect }: MoodCheckInProps) {
 
           {/* Mood Buttons */}
           <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10">
-            {MOODS.map((mood) => (
+            {MOODS.map((mood, index) => (
               <motion.button
                 key={mood.id}
-                whileHover={{ scale: 1.06 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                whileHover={{ scale: 1.06, y: -4 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => onMoodSelect(mood)}
                 className={clsx(
-                  "flex flex-col items-center justify-center gap-2 px-5 py-4 rounded-2xl border-2 cursor-pointer transition-colors duration-200 min-w-[100px]",
+                  "flex flex-col items-center justify-center gap-2 p-6 rounded-2xl border-2 cursor-pointer transition-colors duration-200 min-w-[110px] shadow-sm hover:shadow-md",
                   mood.color
                 )}
               >
-                <span className="text-3xl" role="img" aria-label={mood.label}>
+                <span className="text-4xl" role="img" aria-label={mood.label}>
                   {mood.emoji}
                 </span>
                 <span className="text-sm font-semibold">{mood.label}</span>

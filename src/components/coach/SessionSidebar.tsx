@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, Plus, ArrowRight } from "lucide-react";
+import { Clock, Plus, ArrowRight, Search } from "lucide-react";
 import { DEMO_SESSIONS } from "@/data/coach-responses";
 import { clsx } from "clsx";
 
@@ -18,6 +18,16 @@ export function SessionSidebar({ activeSessionId = 1 }: SessionSidebarProps) {
           <h3 className="font-semibold text-sm">Session History</h3>
         </div>
 
+        {/* Search sessions */}
+        <div className="relative mb-3">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search sessions..."
+            className="w-full rounded-lg border border-slate-200 bg-slate-50 pl-8 pr-3 py-2 text-xs text-slate-600 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-300 transition-all"
+          />
+        </div>
+
         <button
           className={clsx(
             "w-full flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold",
@@ -32,29 +42,39 @@ export function SessionSidebar({ activeSessionId = 1 }: SessionSidebarProps) {
 
       {/* Session list */}
       <div className="flex-1 overflow-y-auto">
-        {DEMO_SESSIONS.map((session, idx) => (
-          <div key={session.id}>
-            <button
-              className={clsx(
-                "w-full text-left px-4 py-3 transition-colors duration-150",
-                activeSessionId === session.id
-                  ? "bg-primary-50 border-l-2 border-primary-500"
-                  : "hover:bg-slate-50 border-l-2 border-transparent"
+        {DEMO_SESSIONS.map((session, idx) => {
+          const isToday = session.date.toLowerCase().includes("today");
+
+          return (
+            <div key={session.id}>
+              <button
+                className={clsx(
+                  "w-full text-left px-4 py-3 transition-colors duration-150",
+                  activeSessionId === session.id
+                    ? "bg-primary-50 border-l-2 border-primary-500"
+                    : "hover:bg-slate-50 border-l-2 border-transparent"
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <span className={clsx(
+                    "w-2 h-2 rounded-full flex-shrink-0",
+                    isToday ? "bg-green-500" : "bg-slate-300"
+                  )} />
+                  <p className="font-medium text-sm text-slate-800 truncate">
+                    {session.title}
+                  </p>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5 ml-4">{session.date}</p>
+                <p className="text-sm text-slate-500 mt-1 truncate ml-4">
+                  {session.preview}
+                </p>
+              </button>
+              {idx < DEMO_SESSIONS.length - 1 && (
+                <div className="border-b border-slate-100 mx-4" />
               )}
-            >
-              <p className="font-medium text-sm text-slate-800 truncate">
-                {session.title}
-              </p>
-              <p className="text-xs text-slate-400 mt-0.5">{session.date}</p>
-              <p className="text-sm text-slate-500 mt-1 truncate">
-                {session.preview}
-              </p>
-            </button>
-            {idx < DEMO_SESSIONS.length - 1 && (
-              <div className="border-b border-slate-100 mx-4" />
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
 
       {/* Footer link */}

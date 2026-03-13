@@ -23,15 +23,23 @@ export function StepProgress({ currentStep, totalSteps, completedSteps }: StepPr
           <span className="text-sm font-medium text-slate-700">
             Step {currentStep} of {totalSteps}
           </span>
-          <span className="text-sm text-slate-500">
-            {CASE_STEPS[currentStep - 1].title}
+          <span className="text-sm font-medium text-primary-600">
+            {Math.round(progress)}% complete
           </span>
         </div>
         <ProgressBar progress={progress} showLabel={false} />
+        <p className="text-xs text-slate-500 text-center">
+          {CASE_STEPS[currentStep - 1].title}
+        </p>
       </div>
 
       {/* Desktop: horizontal step indicators */}
       <div className="hidden md:block overflow-x-auto py-2">
+        <div className="flex items-center justify-end mb-2">
+          <span className="text-sm font-semibold text-primary-600">
+            {Math.round(progress)}% complete
+          </span>
+        </div>
         <div className="flex items-start justify-between min-w-[800px]">
           {CASE_STEPS.map((step, index) => {
             const isCompleted = completedSteps.includes(step.number);
@@ -47,7 +55,7 @@ export function StepProgress({ currentStep, totalSteps, completedSteps }: StepPr
                     {index > 0 && (
                       <div
                         className={clsx(
-                          "h-0.5 flex-1",
+                          "h-[3px] flex-1 rounded-full",
                           completedSteps.includes(CASE_STEPS[index - 1].number) || isCompleted
                             ? "bg-accent-500"
                             : "bg-slate-200"
@@ -59,8 +67,8 @@ export function StepProgress({ currentStep, totalSteps, completedSteps }: StepPr
                     <motion.div
                       layout
                       className={clsx(
-                        "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 transition-all duration-300",
-                        isCurrent && "bg-primary-600 text-white ring-4 ring-primary-100",
+                        "w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 transition-all duration-300",
+                        isCurrent && "bg-primary-600 text-white ring-4 ring-primary-100 shadow-md",
                         isCompleted && "bg-accent-500 text-white",
                         isUpcoming && "bg-slate-200 text-slate-400"
                       )}
@@ -76,7 +84,7 @@ export function StepProgress({ currentStep, totalSteps, completedSteps }: StepPr
                     {index < CASE_STEPS.length - 1 && (
                       <div
                         className={clsx(
-                          "h-0.5 flex-1",
+                          "h-[3px] flex-1 rounded-full",
                           isCompleted ? "bg-accent-500" : "bg-slate-200"
                         )}
                       />

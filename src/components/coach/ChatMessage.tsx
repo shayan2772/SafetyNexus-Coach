@@ -51,8 +51,8 @@ export function ChatMessage({
           className={clsx(
             "inline-block px-4 py-3 text-[15px] leading-relaxed",
             isUser
-              ? "bg-primary-600 text-white rounded-2xl rounded-br-md"
-              : "bg-slate-50 text-slate-800 rounded-2xl rounded-bl-md border border-slate-100"
+              ? "bg-primary-700 text-white rounded-2xl rounded-br-md"
+              : "bg-slate-50 text-slate-800 rounded-2xl rounded-bl-md border border-slate-100 border-l-2 border-l-primary-200"
           )}
         >
           <span className="whitespace-pre-wrap">{content}</span>
@@ -60,6 +60,13 @@ export function ChatMessage({
             <span className="inline-block w-0.5 h-4 bg-primary-500 animate-pulse ml-0.5 align-middle" />
           )}
         </div>
+        {/* Timestamp */}
+        <p className={clsx(
+          "text-[10px] text-slate-300 mt-1",
+          isUser ? "text-right" : "text-left"
+        )}>
+          {new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+        </p>
       </div>
     </motion.div>
   );

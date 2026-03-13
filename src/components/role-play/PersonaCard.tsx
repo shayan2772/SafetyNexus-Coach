@@ -24,11 +24,13 @@ export function PersonaCard({ persona, selected, onSelect }: PersonaCardProps) {
       hover
       onClick={onSelect}
       className={clsx(
-        "relative transition-colors duration-200",
+        "relative transition-colors duration-200 group overflow-hidden",
         selected && "!border-primary-500 border-2 bg-primary-50/50"
       )}
     >
-      <div className="flex gap-4">
+      {/* Subtle background pattern */}
+      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-50 to-transparent rounded-bl-full opacity-60 pointer-events-none" />
+      <div className="relative flex gap-4">
         {/* Avatar */}
         <div className="relative flex-shrink-0">
           <div
@@ -62,11 +64,19 @@ export function PersonaCard({ persona, selected, onSelect }: PersonaCardProps) {
         </div>
       </div>
 
-      {/* Difficulty badge */}
-      <div className="mt-4">
-        <Badge variant={difficultyVariant[persona.difficulty]}>
-          {persona.difficulty}
-        </Badge>
+      {/* Footer */}
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Badge variant={difficultyVariant[persona.difficulty]}>
+            {persona.difficulty}
+          </Badge>
+          <span className="text-xs text-slate-400">
+            {persona.dialogues.length} exchanges
+          </span>
+        </div>
+        <span className="text-sm text-primary-600 font-medium group-hover:translate-x-0.5 transition-transform">
+          Start &rarr;
+        </span>
       </div>
     </Card>
   );
