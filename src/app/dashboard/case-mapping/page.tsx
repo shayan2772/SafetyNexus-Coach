@@ -2,10 +2,10 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui";
 import { CASE_STEPS } from "@/data/case-mapping-data";
-import { StepProgress } from "@/components/case-mapping/StepProgress";
+import { StepNav } from "@/components/case-mapping/StepProgress";
 import { StepForm } from "@/components/case-mapping/StepForm";
 import { DocumentUpload } from "@/components/case-mapping/DocumentUpload";
 import { CasePreview } from "@/components/case-mapping/CasePreview";
@@ -57,7 +57,7 @@ export default function CaseMapping() {
   const [formData, setFormData] = useState<Record<string, unknown>>(SAMPLE_DATA);
   const [viewMode, setViewMode] = useState<"wizard" | "preview">("wizard");
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
+  const [direction, setDirection] = useState(1);
 
   const currentStepData = CASE_STEPS[currentStep - 1];
 
@@ -66,6 +66,10 @@ export default function CaseMapping() {
   }, []);
 
   const goToStep = (step: number) => {
+    // Mark current step as completed when navigating away
+    setCompletedSteps((prev) =>
+      prev.includes(currentStep) ? prev : [...prev, currentStep]
+    );
     setDirection(step > currentStep ? 1 : -1);
     setCurrentStep(step);
     setViewMode("wizard");
@@ -101,15 +105,15 @@ export default function CaseMapping() {
 
   const slideVariants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 300 : -300,
+      y: dir > 0 ? 20 : -20,
       opacity: 0,
     }),
     center: {
-      x: 0,
+      y: 0,
       opacity: 1,
     },
     exit: (dir: number) => ({
-      x: dir > 0 ? -300 : 300,
+      y: dir > 0 ? -20 : 20,
       opacity: 0,
     }),
   };
@@ -128,68 +132,88 @@ export default function CaseMapping() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Sticky progress */}
-      <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-sm py-3 -mx-4 px-4 md:-mx-6 md:px-6">
-        <StepProgress
+    <div className="max-w-6xl mx-auto">
+      {/* Page header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+          <ClipboardList className="w-5 h-5 text-amber-600" />
+        </div>
+        <div>
+          <h1 className="text-xl font-bold text-slate-800">Case Mapping Tool</h1>
+          <p className="text-sm text-slate-400">12-Step Perpetrator Pattern Documentation</p>
+        </div>
+      </div>
+
+      {/* Main layout: sidebar + form */}
+      <div className="flex gap-6 items-start">
+        {/* Step navigation sidebar */}
+        <StepNav
           currentStep={currentStep}
-          totalSteps={12}
           completedSteps={completedSteps}
+          onStepClick={goToStep}
         />
-      </div>
 
-      {/* Step form with transitions */}
-      <div className="relative min-h-[500px]">
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={currentStep}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
-              <StepForm
-                step={currentStepData}
-                formData={formData}
-                onChange={handleFieldChange}
-              />
+        {/* Form area */}
+        <div className="flex-1 min-w-0">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentStep}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-8">
+                <StepForm
+                  step={currentStepData}
+                  formData={formData}
+                  onChange={handleFieldChange}
+                />
 
-              {/* Document upload on steps 2 and 4 */}
-              {(currentStep === 2 || currentStep === 4) && (
-                <div className="mt-8 pt-6 border-t border-slate-100">
-                  <DocumentUpload />
+                {/* Document upload on steps 2 and 4 */}
+                {(currentStep === 2 || currentStep === 4) && (
+                  <div className="mt-8 pt-6 border-t border-slate-100">
+                    <DocumentUpload />
+                  </div>
+                )}
+              </div>
+
+              {/* Navigation buttons */}
+              <div className="flex items-center justify-between mt-5 pb-4">
+                <Button
+                  variant="secondary"
+                  onClick={handlePrev}
+                  disabled={currentStep === 1}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </Button>
+
+                <div className="flex items-center gap-3">
+                  {currentStep === 12 ? (
+                    <Button onClick={handleReview}>
+                      <Eye className="w-4 h-4" />
+                      Review Case Map
+                    </Button>
+                  ) : (
+                    <>
+                      <Button variant="ghost" onClick={handleReview} size="sm">
+                        <Eye className="w-4 h-4" />
+                        Preview
+                      </Button>
+                      <Button onClick={handleNext}>
+                        Next Step
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </>
+                  )}
                 </div>
-              )}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Navigation buttons */}
-      <div className="flex items-center justify-between pb-4">
-        <Button
-          variant="secondary"
-          onClick={handlePrev}
-          disabled={currentStep === 1}
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Previous
-        </Button>
-
-        {currentStep === 12 ? (
-          <Button onClick={handleReview}>
-            <Eye className="w-4 h-4" />
-            Review Case Map
-          </Button>
-        ) : (
-          <Button onClick={handleNext}>
-            Next Step
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        )}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
