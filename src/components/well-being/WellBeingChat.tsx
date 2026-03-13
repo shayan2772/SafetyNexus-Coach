@@ -47,7 +47,7 @@ export function WellBeingChat({ initialMood, onCrisisTriggered }: WellBeingChatP
     if (initializedRef.current) return;
     initializedRef.current = true;
 
-    const id = crypto.randomUUID();
+    const id = String(Date.now() + Math.random());
     streamingIdRef.current = id;
     setIsTyping(true);
 
@@ -105,7 +105,7 @@ export function WellBeingChat({ initialMood, onCrisisTriggered }: WellBeingChatP
       if (!trimmed || isStreaming || isTyping) return;
 
       const userMsg: Message = {
-        id: crypto.randomUUID(),
+        id: String(Date.now() + Math.random()),
         role: "user",
         content: trimmed,
       };
@@ -120,7 +120,7 @@ export function WellBeingChat({ initialMood, onCrisisTriggered }: WellBeingChatP
 
       setIsTyping(true);
       setTimeout(() => {
-        const assistantId = crypto.randomUUID();
+        const assistantId = String(Date.now() + Math.random());
         streamingIdRef.current = assistantId;
         setIsTyping(false);
         setMessages((prev) => [...prev, { id: assistantId, role: "assistant", content: "" }]);

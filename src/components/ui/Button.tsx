@@ -14,7 +14,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={clsx(
-          "font-semibold rounded-xl transition-all duration-200 active:scale-[0.98] inline-flex items-center justify-center gap-2",
+          "font-semibold rounded-xl transition-all duration-200 active:scale-[0.98] inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100",
           {
             "bg-primary-600 hover:bg-primary-700 text-white hover:shadow-lg hover:shadow-primary-600/25":
               variant === "primary",
