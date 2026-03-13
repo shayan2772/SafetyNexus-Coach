@@ -94,6 +94,11 @@ export default function RolePlayPage() {
                   persona={persona}
                   selected={selectedPersona?.id === persona.id}
                   onSelect={() => setSelectedPersona(persona)}
+                  onStart={() => {
+                    setSelectedPersona(persona);
+                    setCoachNotes([]);
+                    setView("active");
+                  }}
                 />
               </AnimatedSection>
             ))}

@@ -10,6 +10,7 @@ interface PersonaCardProps {
   persona: Persona;
   selected: boolean;
   onSelect: () => void;
+  onStart: () => void;
 }
 
 const difficultyVariant: Record<string, "success" | "warning" | "danger"> = {
@@ -18,7 +19,7 @@ const difficultyVariant: Record<string, "success" | "warning" | "danger"> = {
   Advanced: "danger",
 };
 
-export function PersonaCard({ persona, selected, onSelect }: PersonaCardProps) {
+export function PersonaCard({ persona, selected, onSelect, onStart }: PersonaCardProps) {
   return (
     <Card
       hover
@@ -74,9 +75,16 @@ export function PersonaCard({ persona, selected, onSelect }: PersonaCardProps) {
             {persona.dialogues.length} exchanges
           </span>
         </div>
-        <span className="text-sm text-primary-600 font-medium group-hover:translate-x-0.5 transition-transform">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onStart();
+          }}
+          className="text-sm text-primary-600 font-medium hover:translate-x-0.5 transition-transform cursor-pointer hover:text-primary-700"
+        >
           Start &rarr;
-        </span>
+        </button>
       </div>
     </Card>
   );
